@@ -4,6 +4,7 @@ dns.setServers(["8.8.8.8", "8.8.4.4"]);
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const path = require("path");
 dotenv.config();
 const app = express();
 
@@ -13,17 +14,21 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.json());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-//routes
+// Routes
 app.get("/", (req, res) => {
   res.json({
     status: "success",
-    message: "API is working 🚀",
+    message: "API is working",
   });
 });
 
 const userRoutes = require("./routes/userRoutes");
+const authRoutes = require("./routes/authRoutes");
+
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 // DB Connection
 mongoose

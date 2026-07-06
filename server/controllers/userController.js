@@ -1,9 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 
-// =======================
-// GET ALL USERS
-// =======================
+//Get User
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password");
@@ -23,9 +21,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// =======================
-// GET USER BY ID
-// =======================
+// Get user by id  
 const getUserById = async (req, res) => {
   try {
     const foundUser = await User.findById(req.params.id).select("-password");
@@ -51,12 +47,11 @@ const getUserById = async (req, res) => {
   }
 };
 
-// =======================
-// CREATE USER
-// =======================
+// Create User
 const createUser = async (req, res) => {
   try {
     const { username, email, password, role } = req.body;
+    const profileImage = req.file ? req.file.filename : "";
 
     // validation
     if (!username || !email || !password) {
@@ -83,6 +78,7 @@ const createUser = async (req, res) => {
       email,
       password: hashedPassword,
       role,
+      profileImage,
     });
 
     const userWithoutPassword = newUser.toObject();
@@ -103,9 +99,7 @@ const createUser = async (req, res) => {
   }
 };
 
-// =======================
-// UPDATE USER
-// =======================
+// Update User
 const updateUser = async (req, res) => {
   try {
     // hash password if exists
@@ -143,9 +137,7 @@ const updateUser = async (req, res) => {
   }
 };
 
-// =======================
-// DELETE USER
-// =======================
+// Delete User
 const deleteUser = async (req, res) => {
   try {
     const deletedUser = await User.findByIdAndDelete(req.params.id);
@@ -169,9 +161,6 @@ const deleteUser = async (req, res) => {
   }
 };
 
-// =======================
-// EXPORT
-// =======================
 module.exports = {
   createUser,
   getAllUsers,
