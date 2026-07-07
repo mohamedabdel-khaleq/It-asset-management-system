@@ -1,17 +1,6 @@
 const User = require("../models/User");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-
-// Generate JWT Token
-const generateToken = (id) => {
-  return jwt.sign(
-    { id },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: process.env.JWT_EXPIRES_IN || "7d",
-    }
-  );
-};
+const generateToken = require("../utils/generateToken");
 
 // Register
 const register = async (req, res) => {
@@ -36,7 +25,7 @@ const register = async (req, res) => {
       });
     }
 
-    // Check if user already exists
+    // Check if email already exists
     const existingUser = await User.findOne({
       email: email.toLowerCase(),
     });
@@ -48,7 +37,7 @@ const register = async (req, res) => {
       });
     }
 
-    // Upload Image
+    // Upload Profile Image
     const profileImage = req.file ? req.file.filename : "";
 
     // Hash Password
