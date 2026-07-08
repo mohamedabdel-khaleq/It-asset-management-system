@@ -1,133 +1,157 @@
 const User = require("../models/User");
-const bcrypt = require("bcryptjs");
 const generateToken = require("../utils/generateToken");
+const catchAsync = require("../utils/catchAsync");
+const ApiError = require("../utils/ApiError");
+
 
 // Register
-const register = async (req, res) => {
-  try {
-    const { username, email, password, role } = req.body;
+const register = catchAsync(async (req, res, next) => {
 
-    // Validation
-    if (!username || !email || !password) {
-      return res.status(400).json({
-        status: "fail",
-        message: "Username, email and password are required",
-      });
-    }
+  console.log("REGISTER CONTROLLER WORKING");
+  console.log(typeof next);
 
-    // Email Validation
-    const emailRegex = /^\S+@\S+\.\S+$/;
+  const {
+    username,
+    email,
+    password,
+    role,
+  } = req.body;
 
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({
-        status: "fail",
-        message: "Invalid email format",
-      });
-    }
+  console.log("BODY:", req.body);
 
-    // Check if email already exists
-    const existingUser = await User.findOne({
-      email: email.toLowerCase(),
-    });
 
-    if (existingUser) {
-      return res.status(400).json({
-        status: "fail",
-        message: "Email already exists",
-      });
-    }
-
-    // Upload Profile Image
-    const profileImage = req.file ? req.file.filename : "";
-
-    // Hash Password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create User
-    const user = await User.create({
-      username,
-      email: email.toLowerCase(),
-      password: hashedPassword,
-      role,
-      profileImage,
-    });
-
-    // Remove Password
-    const userData = user.toObject();
-    delete userData.password;
-
-    res.status(201).json({
-      status: "success",
-      message: "User registered successfully",
-      token: generateToken(user._id),
-      data: {
-        user: userData,
-      },
-    });
-
-  } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: err.message,
-    });
+  if (!username || !email || !password) {
+    console.log("VALIDATION ERROR");
+    return next(
+      new ApiError(
+        "Username, email and password are required",
+        400
+      )
+    );
   }
-};
+
+
+  const existingUser = await User.findOne({
+    email: email.toLowerCase(),
+  });
+
+  console.log("CHECK USER DONE");
+
+
+  if (existingUser) {
+    console.log("USER EXISTS");
+    return next(
+      new ApiError(
+        "Email already exists",
+        400
+      )
+    );
+  }
+
+
+  const profileImage = req.file ? req.file.filename : "";
+
+  console.log("BEFORE CREATE");
+
+
+  const user = await User.create({
+    username,
+    email: email.toLowerCase(),
+    password,
+    role,
+    profileImage,
+  });
+
+
+  console.log("USER CREATED");
+
+
+  const token = generateToken(user._id);
+
+  console.log("TOKEN CREATED");
+
+
+  res.status(201).json({
+    success: true,
+    message: "User registered successfully",
+    token,
+    data: user,
+  });
+
+});
+
 
 // Login
-const login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+const login = catchAsync(async (req, res, next) => {
 
-    // Validation
-    if (!email || !password) {
-      return res.status(400).json({
-        status: "fail",
-        message: "Email and password are required",
-      });
-    }
+  const {
+    email,
+    password,
+  } = req.body;
 
-    // Find User
-    const user = await User.findOne({
-      email: email.toLowerCase(),
-    });
 
-    if (!user) {
-      return res.status(401).json({
-        status: "fail",
-        message: "Invalid email or password",
-      });
-    }
-
-    // Compare Password
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(401).json({
-        status: "fail",
-        message: "Invalid email or password",
-      });
-    }
-
-    // Remove Password
-    const userData = user.toObject();
-    delete userData.password;
-
-    res.status(200).json({
-      status: "success",
-      message: "Login successful",
-      token: generateToken(user._id),
-      data: {
-        user: userData,
-      },
-    });
-
-  } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: err.message,
-    });
+  // Validation
+  if (!email || !password) {
+    return next(
+      new ApiError(
+        "Email and password are required",
+        400
+      )
+    );
   }
-};
+
+
+  // Find User With Password
+  const user = await User.findOne({
+    email: email.toLowerCase(),
+  }).select("+password");
+
+
+  if (!user) {
+    return next(
+      new ApiError(
+        "Invalid email or password",
+        401
+      )
+    );
+  }
+
+
+  // Compare Password
+  const isMatch = await user.comparePassword(password);
+
+
+  if (!isMatch) {
+    return next(
+      new ApiError(
+        "Invalid email or password",
+        401
+      )
+    );
+  }
+
+
+  // Update Last Login
+  user.lastLogin = new Date();
+
+  await user.save({
+    validateBeforeSave: false,
+  });
+
+
+  const token = generateToken(user._id);
+
+
+  res.status(200).json({
+    success: true,
+    message: "Login successful",
+    token,
+    data: user,
+  });
+
+});
+
+
 
 module.exports = {
   register,

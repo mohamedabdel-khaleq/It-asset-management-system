@@ -1,49 +1,43 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const catchAsync = require("../utils/catchAsync");
+const ApiError = require("../utils/ApiError");
 
-const authMiddleware = async (req, res, next) => {
-  try {
-    let token;
+const authMiddleware = catchAsync(async (req, res, next) => {
+  let token;
 
-    // Check if Authorization header exists
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer ")
-    ) {
-      token = req.headers.authorization.split(" ")[1];
-    }
-
-    // No Token
-    if (!token) {
-      return res.status(401).json({
-        success: false,
-        message: "Unauthorized. No token provided.",
-      });
-    }
-
-    // Verify Token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    // Find User
-    const currentUser = await User.findById(decoded.id).select("-password");
-
-    if (!currentUser) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found.",
-      });
-    }
-
-    // Save user in request
-    req.user = currentUser;
-
-    next();
-  } catch (err) {
-    return res.status(401).json({
-      success: false,
-      message: "Invalid token",
-    });
+  // Check Authorization Header
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer ")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
   }
-};
+
+  // No Token
+  if (!token) {
+    return next(new ApiError("Unauthorized. No token provided.", 401));
+  }
+
+  // Verify Token
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+  // Find User
+  const currentUser = await User.findById(decoded.id);
+
+  if (!currentUser) {
+    return next(new ApiError("User not found.", 404));
+  }
+
+  // Check if User is Active
+  if (!currentUser.isActive) {
+    return next(new ApiError("Your account has been deactivated.", 403));
+  }
+
+  // Save User in Request
+  req.user = currentUser;
+
+  next();
+});
 
 module.exports = authMiddleware;

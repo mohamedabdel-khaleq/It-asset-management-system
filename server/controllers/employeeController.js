@@ -1,20 +1,23 @@
 const Employee = require("../models/Employee");
-
+const ApiFeatures = require("../utils/apiFeatures");
 const catchAsync = require("../utils/catchAsync");
 const ApiError = require("../utils/ApiError");
 
-
 // Get All Employees
 const getAllEmployee = catchAsync(async (req, res) => {
+  const features = new ApiFeatures(Employee.find(), req.query)
+    .search(["fullName", "email", "phone"])
+    .filter()
+    .sort()
+    .paginate();
 
-  const employees = await Employee.find();
+  const employees = await features.query;
 
   res.status(200).json({
     success: true,
     count: employees.length,
     data: employees,
   });
-
 });
 
 
@@ -38,6 +41,7 @@ const getEmployeeById = catchAsync(async (req, res) => {
 const createEmployee = catchAsync(async (req, res) => {
 
   const {
+    employeeId,
     fullName,
     email,
     phone,
@@ -47,7 +51,14 @@ const createEmployee = catchAsync(async (req, res) => {
   } = req.body;
 
 
-  if (!fullName || !email || !phone || !department || !jobTitle) {
+  if (
+    !employeeId ||
+    !fullName ||
+    !email ||
+    !phone ||
+    !department ||
+    !jobTitle
+  ) {
     throw new ApiError(
       "All required fields must be provided",
       400
@@ -56,7 +67,7 @@ const createEmployee = catchAsync(async (req, res) => {
 
 
   const existingEmployee = await Employee.findOne({
-    email,
+    email: email.toLowerCase(),
   });
 
 
@@ -68,9 +79,23 @@ const createEmployee = catchAsync(async (req, res) => {
   }
 
 
+  const existingEmployeeId = await Employee.findOne({
+    employeeId,
+  });
+
+
+  if (existingEmployeeId) {
+    throw new ApiError(
+      "Employee ID already exists",
+      400
+    );
+  }
+
+
   const employee = await Employee.create({
+    employeeId,
     fullName,
-    email,
+    email: email.toLowerCase(),
     phone,
     department,
     jobTitle,
@@ -85,7 +110,6 @@ const createEmployee = catchAsync(async (req, res) => {
   });
 
 });
-
 
 // Update Employee
 const updateEmployee = catchAsync(async (req, res) => {

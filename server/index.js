@@ -33,6 +33,7 @@ const departmentRoutes = require("./routes/departmentRoutes");
 const deviceRoutes = require("./routes/deviceRoutes");
 const assignmentRoutes = require("./routes/assignmentRoutes");
 const maintenanceRoutes = require("./routes/maintenanceRoutes");
+const reportRoutes = require("./routes/reportRoutes");
 const errorMiddleware = require("./middleware/errorMiddleware");
 
 app.use("/api/v1/users", userRoutes);
@@ -42,29 +43,8 @@ app.use("/api/v1/departments", departmentRoutes);
 app.use("/api/v1/devices", deviceRoutes);
 app.use("/api/v1/assignments", assignmentRoutes);
 app.use("/api/v1/maintenances", maintenanceRoutes);
+app.use("/api/v1/reports", reportRoutes);
 app.use(errorMiddleware);
-
-/*
-// DB Connection
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log("MongoDB Connected Successfully");
-  })
-  .catch((err) => {
-    console.log(" MongoDB Connection Failed");
-    console.log(err.message);
-  });
-
-mongoose.connection.on("connected", () => {
-  console.log(" Mongoose Connected");
-});
-
-mongoose.connection.on("error", (err) => {
-  console.log("Mongoose Error:", err.message);
-});
-*/
-
 
 // Server
 const PORT = process.env.PORT || 5000;

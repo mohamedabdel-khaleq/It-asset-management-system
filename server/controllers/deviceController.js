@@ -1,5 +1,5 @@
 const Device = require("../models/Device");
-
+const ApiFeatures = require("../utils/apiFeatures");
 const catchAsync = require("../utils/catchAsync");
 const ApiError = require("../utils/ApiError");
 
@@ -7,7 +7,19 @@ const ApiError = require("../utils/ApiError");
 // Get All Devices
 const getAllDevices = catchAsync(async (req, res) => {
 
-  const devices = await Device.find();
+  const features = new ApiFeatures(Device.find(), req.query)
+    .search([
+      "assetTag",
+      "deviceName",
+      "brand",
+      "model",
+      "serialNumber",
+    ])
+    .filter()
+    .sort()
+    .paginate();
+
+  const devices = await features.query;
 
   res.status(200).json({
     success: true,

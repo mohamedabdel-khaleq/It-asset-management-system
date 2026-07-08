@@ -1,39 +1,56 @@
-const Employee = require("../models/Employee");
-const Department = require("../models/Department");
-const Device = require("../models/Device");
-const Assignment = require("../models/Assignment");
-const Maintenance = require("../models/Maintenance");
-const Vendor = require("../models/Vendor");
+const express = require("express");
+const router = express.Router();
+
+const reportController = require("../controllers/reportController");
+const authMiddleware = require("../middleware/authMiddleware");
+const roleMiddleware = require("../middleware/roleMiddleware");
 
 // Dashboard Report
-const getDashboardReport = async (req, res) => {
-  try {
-    const totalEmployees = await Employee.countDocuments();
-    const totalDepartments = await Department.countDocuments();
-    const totalDevices = await Device.countDocuments();
-    const totalAssignments = await Assignment.countDocuments();
-    const totalMaintenances = await Maintenance.countDocuments();
-    const totalVendors = await Vendor.countDocuments();
+router.get(
+  "/dashboard",
+  authMiddleware,
+  roleMiddleware("admin", "it_support"),
+  reportController.getDashboardReport
+);
 
-    res.status(200).json({
-      success: true,
-      data: {
-        totalEmployees,
-        totalDepartments,
-        totalDevices,
-        totalAssignments,
-        totalMaintenances,
-        totalVendors,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
-    });
-  }
-};
+// Available Devices Report
+router.get(
+  "/available-devices",
+  authMiddleware,
+  roleMiddleware("admin", "it_support"),
+  reportController.getAvailableDevices
+);
 
-module.exports = {
-  getDashboardReport,
-};
+// Assigned Devices Report
+router.get(
+  "/assigned-devices",
+  authMiddleware,
+  roleMiddleware("admin", "it_support"),
+  reportController.getAssignedDevices
+);
+
+// Maintenance Devices Report
+router.get(
+  "/maintenance-devices",
+  authMiddleware,
+  roleMiddleware("admin", "it_support"),
+  reportController.getMaintenanceDevices
+);
+
+// Retired Devices Report
+router.get(
+  "/retired-devices",
+  authMiddleware,
+  roleMiddleware("admin", "it_support"),
+  reportController.getRetiredDevices
+);
+
+// Warranty Expiring Devices Report
+router.get(
+  "/warranty-expiring",
+  authMiddleware,
+  roleMiddleware("admin", "it_support"),
+  reportController.getWarrantyExpiringDevices
+);
+
+module.exports = router;
