@@ -31,7 +31,8 @@ const employeeSchema = new mongoose.Schema(
     },
 
     department: {
-      type: mongoose.Schema.Types.ObjectId,
+      //type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: "Department",
       required: true,
     },

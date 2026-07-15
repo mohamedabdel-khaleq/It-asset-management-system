@@ -1,0 +1,112 @@
+<nav class="bg-blue-700 text-white shadow">
+
+    <div class="max-w-7xl mx-auto px-8">
+
+        <div class="flex items-center justify-between h-16">
+
+
+            <!-- Logo -->
+
+            <h1 class="text-xl font-bold">
+                IT Asset Management
+            </h1>
+
+
+
+            <!-- Links -->
+
+            <div class="flex gap-6 items-center">
+
+
+                <a
+                    routerLink="/dashboard"
+                    class="hover:text-gray-200">
+
+                    Dashboard
+
+                </a>
+
+
+
+                <a
+                    routerLink="/devices"
+                    class="hover:text-gray-200">
+
+                    Devices
+
+                </a>
+
+
+
+                <a
+                    routerLink="/employees"
+                    class="hover:text-gray-200">
+
+                    Employees
+
+                </a>
+
+
+
+                <a
+                    routerLink="/departments"
+                    class="hover:text-gray-200">
+
+                    Departments
+
+                </a>
+
+
+
+                <a
+                    routerLink="/maintenance"
+                    class="hover:text-gray-200">
+
+                    Maintenance
+
+                </a>
+
+
+
+                <a
+                    routerLink="/reports"
+                    class="hover:text-gray-200">
+
+                    Reports
+
+                </a>
+
+
+
+                <!-- User -->
+
+                <span class="border-l pl-4">
+
+                    {{ username }}
+
+                </span>
+
+
+
+                <!-- Logout -->
+
+                <button
+                    (click)="logout()"
+                    class="bg-red-500 px-3 py-1 rounded hover:bg-red-600">
+
+                    Logout
+
+                </button>
+
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</nav>

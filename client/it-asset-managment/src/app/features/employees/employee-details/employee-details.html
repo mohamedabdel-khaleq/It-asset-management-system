@@ -1,0 +1,112 @@
+<div class="p-8">
+
+
+    @if (loading) {
+
+        <div class="text-center py-10">
+
+            <p class="text-xl">
+                Loading Employee...
+            </p>
+
+        </div>
+
+
+    } @else if (employee) {
+
+
+        <div class="bg-white shadow rounded-xl p-6">
+
+
+            <h1 class="text-3xl font-bold mb-6">
+                Employee Details
+            </h1>
+
+
+            <div class="space-y-3">
+
+
+                <p>
+                    <strong>ID:</strong>
+                    {{ employee.employeeId }}
+                </p>
+
+
+                <p>
+                    <strong>Name:</strong>
+                    {{ employee.fullName }}
+                </p>
+
+
+                <p>
+                    <strong>Email:</strong>
+                    {{ employee.email }}
+                </p>
+
+
+                <p>
+                    <strong>Phone:</strong>
+                    {{ employee.phone }}
+                </p>
+
+
+                <p>
+                    <strong>Department:</strong>
+                    {{ employee.department }}
+                </p>
+
+
+                <p>
+                    <strong>Job Title:</strong>
+                    {{ employee.jobTitle }}
+                </p>
+
+
+                <p>
+                    <strong>Status:</strong>
+
+                    <span
+                        class="px-3 py-1 rounded-full text-white"
+                        [class.bg-green-600]="employee.status === 'Active'"
+                        [class.bg-red-600]="employee.status !== 'Active'">
+
+                        {{ employee.status }}
+
+                    </span>
+
+                </p>
+
+
+            </div>
+
+
+
+            <a
+                routerLink="/employees"
+                class="inline-block mt-6 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
+
+                Back To Employees
+
+            </a>
+
+
+
+        </div>
+
+
+    } @else {
+
+
+        <div class="text-center py-10">
+
+            <p class="text-red-600 text-xl">
+                Employee Not Found
+            </p>
+
+        </div>
+
+
+    }
+
+
+</div>

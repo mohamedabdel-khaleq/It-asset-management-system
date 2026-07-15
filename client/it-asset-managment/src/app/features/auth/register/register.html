@@ -1,0 +1,328 @@
+<div class="min-h-screen flex items-center justify-center bg-slate-100 p-6">
+
+  <div class="w-full max-w-3xl bg-white rounded-2xl shadow-xl p-8">
+
+    <h1 class="text-4xl font-bold text-center text-blue-700">
+      Create Account
+    </h1>
+
+    <p class="text-center text-gray-500 mt-2 mb-8">
+      IT Asset Management System
+    </p>
+
+    <!-- Error -->
+    <div
+      *ngIf="error"
+      class="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
+
+      {{error}}
+
+    </div>
+
+    <!-- Success -->
+
+    <div
+      *ngIf="success"
+      class="bg-green-100 text-green-700 p-3 rounded-lg mb-4">
+
+      {{success}}
+
+    </div>
+
+    <!-- FORM -->
+
+    <form
+      (ngSubmit)="register()"
+      class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+      <!-- First Name -->
+
+      <div>
+
+        <label class="font-semibold">
+          First Name
+        </label>
+
+        <input
+
+          type="text"
+
+          [(ngModel)]="user.firstName"
+
+          name="firstName"
+
+          class="w-full border rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+          placeholder="Enter First Name">
+
+      </div>
+
+      <!-- Last Name -->
+
+      <div>
+
+        <label class="font-semibold">
+          Last Name
+        </label>
+
+        <input
+
+          type="text"
+
+          [(ngModel)]="user.lastName"
+
+          name="lastName"
+
+          class="w-full border rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+          placeholder="Enter Last Name">
+
+      </div>
+
+      <!-- Username -->
+
+      <div>
+
+        <label class="font-semibold">
+
+          Username
+
+        </label>
+
+        <input
+
+          type="text"
+
+          [(ngModel)]="user.username"
+
+          name="username"
+
+          class="w-full border rounded-lg p-3 mt-2"
+
+          placeholder="Username">
+
+      </div>
+
+      <!-- Email -->
+
+      <div>
+
+        <label class="font-semibold">
+
+          Email
+
+        </label>
+
+        <input
+
+          type="email"
+
+          [(ngModel)]="user.email"
+
+          name="email"
+
+          class="w-full border rounded-lg p-3 mt-2"
+
+          placeholder="Email">
+
+      </div>
+
+      <!-- Password -->
+
+      <div>
+
+        <label class="font-semibold">
+
+          Password
+
+        </label>
+
+        <input
+
+          [type]="showPassword ? 'text' : 'password'"
+
+          [(ngModel)]="user.password"
+
+          name="password"
+
+          class="w-full border rounded-lg p-3 mt-2"
+
+          placeholder="Password">
+
+        <button
+
+          type="button"
+
+          (click)="togglePassword()"
+
+          class="text-blue-600 mt-2">
+
+          {{showPassword ? 'Hide Password' : 'Show Password'}}
+
+        </button>
+
+      </div>
+
+      <!-- Confirm Password -->
+
+      <div>
+
+        <label class="font-semibold">
+
+          Confirm Password
+
+        </label>
+
+        <input
+
+          [type]="showConfirmPassword ? 'text' : 'password'"
+
+          [(ngModel)]="user.confirmPassword"
+
+          name="confirmPassword"
+
+          class="w-full border rounded-lg p-3 mt-2"
+
+          placeholder="Confirm Password">
+
+        <button
+
+          type="button"
+
+          (click)="toggleConfirmPassword()"
+
+          class="text-blue-600 mt-2">
+
+          {{showConfirmPassword ? 'Hide Password' : 'Show Password'}}
+
+        </button>
+
+      </div>
+
+      <!-- Gender -->
+
+      <div>
+
+        <label class="font-semibold">
+
+          Gender
+
+        </label>
+
+        <select
+
+          [(ngModel)]="user.gender"
+
+          name="gender"
+
+          class="w-full border rounded-lg p-3 mt-2">
+
+          <option value="">Select Gender</option>
+
+          <option value="Male">Male</option>
+
+          <option value="Female">Female</option>
+
+        </select>
+
+      </div>
+
+      <!-- Date -->
+
+      <div>
+
+        <label class="font-semibold">
+
+          Date Of Birth
+
+        </label>
+
+        <input
+
+          type="date"
+
+          [(ngModel)]="user.dateOfBirth"
+
+          name="dob"
+
+          class="w-full border rounded-lg p-3 mt-2">
+
+      </div>
+
+      <!-- Role -->
+
+      <div class="md:col-span-2">
+
+        <label class="font-semibold">
+
+          Role
+
+        </label>
+
+        <select
+
+          [(ngModel)]="user.role"
+
+          name="role"
+
+          class="w-full border rounded-lg p-3 mt-2">
+
+          <option value="employee">
+
+            Employee
+
+          </option>
+
+          <option value="admin">
+
+            Admin
+
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- Button -->
+
+      <div class="md:col-span-2">
+
+        <button
+
+          type="submit"
+
+          [disabled]="loading"
+
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-lg">
+
+          {{loading ? 'Creating Account...' : 'Register'}}
+
+        </button>
+
+      </div>
+
+      <div class="md:col-span-2 text-center">
+
+        <p>
+
+          Already have an account?
+
+          <a
+
+            routerLink="/login"
+
+            class="text-blue-600 font-bold">
+
+            Login
+
+          </a>
+
+        </p>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

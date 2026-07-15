@@ -1,0 +1,218 @@
+<div class="p-8">
+
+    <div class="flex justify-between items-center mb-6">
+
+        <h1 class="text-3xl font-bold">
+            Employees
+        </h1>
+
+
+        <button
+            (click)="goToAddEmployee()"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg transition">
+
+            + Add Employee
+
+        </button>
+
+    </div>
+
+
+    <!-- Debug Info -->
+    <div class="mb-4 bg-gray-100 p-3 rounded">
+
+        <p>
+            Loading: {{ loading }}
+        </p>
+
+        <p>
+            Employees Count: {{ employees.length }}
+        </p>
+
+    </div>
+
+
+
+    @if (loading) {
+
+        <div class="text-center py-10 text-lg">
+
+            Loading Employees...
+
+        </div>
+
+
+    } @else {
+
+
+        @if (employees.length === 0) {
+
+            <div class="text-center py-10 text-gray-500">
+
+                No Employees Found
+
+            </div>
+
+
+        } @else {
+
+
+            <table class="w-full bg-white rounded-xl shadow overflow-hidden">
+
+
+                <thead class="bg-blue-600 text-white">
+
+                    <tr>
+
+                        <th class="p-3">
+                            ID
+                        </th>
+
+                        <th>
+                            Name
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Department
+                        </th>
+
+                        <th>
+                            Job
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+
+                <tbody>
+
+
+                    @for (employee of employees; track employee._id) {
+
+
+                        <tr class="border-b hover:bg-gray-50">
+
+
+                            <td class="p-3">
+
+                                {{ employee.employeeId }}
+
+                            </td>
+
+
+
+                            <td>
+
+                                {{ employee.fullName }}
+
+                            </td>
+
+
+
+                            <td>
+
+                                {{ employee.email }}
+
+                            </td>
+
+
+
+                            <td>
+
+                                {{ employee.department }}
+
+                            </td>
+
+
+
+                            <td>
+
+                                {{ employee.jobTitle }}
+
+                            </td>
+
+
+
+                            <td>
+
+
+                                <span
+                                    class="px-3 py-1 rounded-full text-white"
+                                    [class.bg-green-600]="employee.status === 'Active'"
+                                    [class.bg-red-600]="employee.status !== 'Active'">
+
+                                    {{ employee.status }}
+
+                                </span>
+
+
+                            </td>
+
+
+
+                            <td class="space-x-2">
+
+
+                                <button
+                                    class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded">
+
+                                    View
+
+                                </button>
+
+
+
+                                <button
+                                    class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded">
+
+                                    Edit
+
+                                </button>
+
+
+
+                                <button
+                                    (click)="deleteEmployee(employee._id)"
+                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">
+
+                                    Delete
+
+                                </button>
+
+
+                            </td>
+
+
+                        </tr>
+
+
+                    }
+
+
+                </tbody>
+
+
+            </table>
+
+
+        }
+
+
+    }
+
+
+</div>

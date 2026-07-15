@@ -1,0 +1,133 @@
+<div class="p-8">
+
+    <div class="flex justify-between items-center mb-6">
+
+        <h1 class="text-3xl font-bold">
+            Devices
+        </h1>
+
+
+        <a
+            routerLink="/devices/add"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
+            Add Device
+        </a>
+
+    </div>
+
+
+
+    <!-- Loading -->
+    @if(loading){
+
+        <div class="text-center text-gray-500 text-lg">
+            Loading Devices...
+        </div>
+
+    }
+
+
+
+    <!-- Empty -->
+    @else if(devices.length === 0){
+
+        <div class="text-center text-gray-500 text-lg">
+            No Devices Found
+        </div>
+
+    }
+
+
+
+    <!-- Devices -->
+    @else {
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+
+            @for(device of devices; track device._id){
+
+                <div class="bg-white shadow-lg rounded-xl p-6 border">
+
+
+                    <h2 class="text-xl font-bold mb-4">
+                        {{ device.deviceName }}
+                    </h2>
+
+
+                    <div class="space-y-2">
+
+
+                        <p>
+                            <strong>Asset Tag:</strong>
+                            {{ device.assetTag }}
+                        </p>
+
+
+                        <p>
+                            <strong>Category:</strong>
+                            {{ device.category }}
+                        </p>
+
+
+                        <p>
+                            <strong>Brand:</strong>
+                            {{ device.brand }}
+                        </p>
+
+
+                        <p>
+                            <strong>Model:</strong>
+                            {{ device.model }}
+                        </p>
+
+
+                        <p>
+                            <strong>Serial:</strong>
+                            {{ device.serialNumber }}
+                        </p>
+
+
+                        <p>
+                            <strong>Status:</strong>
+                            {{ device.status }}
+                        </p>
+
+
+                    </div>
+
+
+
+                    <div class="mt-5 flex gap-3">
+                        
+                        <!--button-->
+                            class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
+                            Edit
+                        <!--/button-->
+
+                        <a [routerLink]="['/devices/edit', device._id]" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
+                            Edit
+                        </a>
+
+
+                        <button
+                            (click)="deleteDevice(device._id)"
+                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+                            Delete
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+            }
+
+
+        </div>
+
+    }
+
+
+</div>

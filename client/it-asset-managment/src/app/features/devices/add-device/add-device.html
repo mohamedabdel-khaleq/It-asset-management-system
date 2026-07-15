@@ -1,0 +1,286 @@
+<div class="p-8">
+
+    <h1 class="text-3xl font-bold mb-6">
+        Add New Device
+    </h1>
+
+
+    @if(error){
+
+        <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
+
+            {{ error }}
+
+        </div>
+
+    }
+
+
+    <form
+        (ngSubmit)="addDevice()"
+        class="bg-white shadow rounded-xl p-6 space-y-5">
+
+
+        <!-- Asset Tag -->
+        <div>
+
+            <label class="block mb-1 font-semibold">
+                Asset Tag
+            </label>
+
+            <input
+                type="text"
+                [(ngModel)]="device.assetTag"
+                name="assetTag"
+                class="w-full border p-2 rounded"
+                placeholder="Ex: LAP-001">
+
+        </div>
+
+
+
+        <!-- Device Name -->
+        <div>
+
+            <label class="block mb-1 font-semibold">
+                Device Name
+            </label>
+
+            <input
+                type="text"
+                [(ngModel)]="device.deviceName"
+                name="deviceName"
+                class="w-full border p-2 rounded"
+                placeholder="Ex: Dell Laptop">
+
+        </div>
+
+
+
+
+        <!-- Category -->
+        <div>
+
+            <label class="block mb-1 font-semibold">
+                Category
+            </label>
+
+
+            <select
+                [(ngModel)]="device.category"
+                name="category"
+                class="w-full border p-2 rounded">
+
+
+                @for(category of categories; track category){
+
+                    <option [value]="category">
+
+                        {{ category }}
+
+                    </option>
+
+                }
+
+
+            </select>
+
+
+        </div>
+
+
+
+
+        <!-- Brand -->
+        <div>
+
+            <label class="block mb-1 font-semibold">
+                Brand
+            </label>
+
+
+            <input
+                type="text"
+                [(ngModel)]="device.brand"
+                name="brand"
+                class="w-full border p-2 rounded">
+
+
+        </div>
+
+
+
+
+        <!-- Model -->
+        <div>
+
+            <label class="block mb-1 font-semibold">
+                Model
+            </label>
+
+
+            <input
+                type="text"
+                [(ngModel)]="device.model"
+                name="model"
+                class="w-full border p-2 rounded">
+
+
+        </div>
+
+
+
+
+        <!-- Serial Number -->
+        <div>
+
+            <label class="block mb-1 font-semibold">
+                Serial Number
+            </label>
+
+
+            <input
+                type="text"
+                [(ngModel)]="device.serialNumber"
+                name="serialNumber"
+                class="w-full border p-2 rounded">
+
+
+        </div>
+
+
+
+
+        <!-- Purchase Date -->
+        <div>
+
+            <label class="block mb-1 font-semibold">
+                Purchase Date
+            </label>
+
+
+            <input
+                type="date"
+                [(ngModel)]="device.purchaseDate"
+                name="purchaseDate"
+                class="w-full border p-2 rounded">
+
+
+        </div>
+
+
+
+
+        <!-- Warranty -->
+        <div>
+
+            <label class="block mb-1 font-semibold">
+                Warranty Expiry
+            </label>
+
+
+            <input
+                type="date"
+                [(ngModel)]="device.warrantyExpiry"
+                name="warrantyExpiry"
+                class="w-full border p-2 rounded">
+
+
+        </div>
+
+
+
+
+        <!-- Status -->
+        <div>
+
+            <label class="block mb-1 font-semibold">
+                Status
+            </label>
+
+
+            <select
+                [(ngModel)]="device.status"
+                name="status"
+                class="w-full border p-2 rounded">
+
+
+                <option value="Available">
+                    Available
+                </option>
+
+
+                <option value="Assigned">
+                    Assigned
+                </option>
+
+
+                <option value="Maintenance">
+                    Maintenance
+                </option>
+
+
+                <option value="Retired">
+                    Retired
+                </option>
+
+
+            </select>
+
+
+        </div>
+
+
+
+
+        <!-- Notes -->
+        <div>
+
+            <label class="block mb-1 font-semibold">
+                Notes
+            </label>
+
+
+            <textarea
+                [(ngModel)]="device.notes"
+                name="notes"
+                class="w-full border p-2 rounded">
+            </textarea>
+
+
+        </div>
+
+
+
+
+        <button
+            type="submit"
+            [disabled]="loading"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
+
+
+            @if(loading){
+                Saving...
+            } @else {
+                Add Device
+            }
+
+
+        </button>
+
+
+
+        <a
+            routerLink="/devices"
+            class="ml-3 text-gray-600">
+
+
+            Cancel
+
+        </a>
+
+
+    </form>
+
+
+</div>
