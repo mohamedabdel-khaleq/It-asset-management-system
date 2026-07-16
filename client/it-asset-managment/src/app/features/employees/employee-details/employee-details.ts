@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { EmployeeService } from '../../../core/services/employee';
 
@@ -19,59 +19,46 @@ export class EmployeeDetails implements OnInit {
 
 
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private employeeService = inject(EmployeeService);
 
 
   employee: any = null;
 
   loading = true;
+  error = '';
 
 
   ngOnInit(): void {
-
     const id = this.route.snapshot.paramMap.get('id');
-
+    this.error = '';
 
     if (id) {
-
       this.loadEmployee(id);
-
+    } else {
+      this.loading = false;
+      this.error = 'No employee ID was provided.';
     }
-
   }
 
 
 
   loadEmployee(id: string): void {
+    this.loading = true;
 
-
-    this.employeeService.getEmployee(id)
-      .subscribe({
-
-        next: (res) => {
-
-          console.log('Employee Details:', res);
-
-
-          this.employee = res.data || res;
-
-
-          this.loading = false;
-
-        },
-
-
-        error: (err) => {
-
-          console.error(err);
-
-          this.loading = false;
-
-        }
-
-      });
-
-
+    this.employeeService.getEmployee(id).subscribe({
+      next: (res: any) => {
+        this.employee = res?.data || res;
+        this.error = '';
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.loading = false;
+        this.employee = null;
+        this.error = err?.error?.message || 'Unable to load employee details.';
+      }
+    });
   }
 
 }

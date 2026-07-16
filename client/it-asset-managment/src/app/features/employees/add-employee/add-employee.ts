@@ -41,10 +41,11 @@ export class AddEmployee {
       !this.employee.employeeId ||
       !this.employee.fullName ||
       !this.employee.email ||
+      !this.employee.phone ||
       !this.employee.department ||
       !this.employee.jobTitle
     ) {
-      this.error = 'Please fill all required fields.';
+      this.error = 'Please fill all required fields, including phone.';
       return;
     }
 
@@ -64,9 +65,8 @@ export class AddEmployee {
 
           alert('Employee Added Successfully');
 
-
           // go back to employees list
-          this.router.navigate(['/employees']);
+          this.router.navigateByUrl('/employees');
 
         },
 

@@ -6,128 +6,156 @@
             Devices
         </h1>
 
+        <div class="flex gap-2">
 
-        <a
-            routerLink="/devices/add"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
-            Add Device
-        </a>
+            <button
+                type="button"
+                (click)="loadDevices()"
+                class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded">
+
+                Refresh
+
+            </button>
+
+            <a
+                routerLink="/devices/add"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded">
+
+                Add Device
+
+            </a>
+
+        </div>
 
     </div>
 
 
+    <!-- Debug -->
+    <div class="mb-4 text-sm text-gray-600">
+
+        <p>Loading: {{ loading }}</p>
+        <p>Devices Count: {{ devices.length }}</p>
+
+    </div>
+
 
     <!-- Loading -->
-    @if(loading){
 
-        <div class="text-center text-gray-500 text-lg">
-            Loading Devices...
-        </div>
+    <div
+        *ngIf="loading"
+        class="text-center text-lg text-gray-600 py-10">
 
-    }
+        Loading Devices...
 
+    </div>
+
+
+    <!-- Error -->
+
+    <div
+        *ngIf="error"
+        class="mb-4 rounded bg-red-100 p-3 text-red-700">
+
+        {{ error }}
+
+    </div>
 
 
     <!-- Empty -->
-    @else if(devices.length === 0){
 
-        <div class="text-center text-gray-500 text-lg">
-            No Devices Found
-        </div>
+    <div
+        *ngIf="!loading && !error && devices.length === 0"
+        class="text-center py-10 text-gray-500">
 
-    }
+        No Devices Found
 
+    </div>
 
 
     <!-- Devices -->
-    @else {
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div
+        *ngIf="!loading && devices.length > 0"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
+        <div
+            *ngFor="let device of devices"
+            class="bg-white shadow-lg rounded-xl border p-6">
 
-            @for(device of devices; track device._id){
+            <h2 class="text-xl font-bold text-blue-700 mb-4">
 
-                <div class="bg-white shadow-lg rounded-xl p-6 border">
+                {{ device.deviceName }}
 
-
-                    <h2 class="text-xl font-bold mb-4">
-                        {{ device.deviceName }}
-                    </h2>
-
-
-                    <div class="space-y-2">
+            </h2>
 
 
-                        <p>
-                            <strong>Asset Tag:</strong>
-                            {{ device.assetTag }}
-                        </p>
+            <div class="space-y-2">
+
+                <p>
+                    <strong>Asset Tag:</strong>
+                    {{ device.assetTag }}
+                </p>
+
+                <p>
+                    <strong>Category:</strong>
+                    {{ device.category }}
+                </p>
+
+                <p>
+                    <strong>Brand:</strong>
+                    {{ device.brand }}
+                </p>
+
+                <p>
+                    <strong>Model:</strong>
+                    {{ device.model }}
+                </p>
+
+                <p>
+                    <strong>Serial Number:</strong>
+                    {{ device.serialNumber }}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+
+                    <span
+                        class="px-2 py-1 rounded text-white"
+                        [class.bg-green-600]="device.status === 'Available'"
+                        [class.bg-yellow-500]="device.status === 'Assigned'"
+                        [class.bg-red-600]="device.status === 'Maintenance'">
+
+                        {{ device.status }}
+
+                    </span>
+
+                </p>
+
+            </div>
 
 
-                        <p>
-                            <strong>Category:</strong>
-                            {{ device.category }}
-                        </p>
+            <div class="flex gap-3 mt-6">
 
+                <button
+                    (click)="goToEditDevice(device)"
+                    class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
 
-                        <p>
-                            <strong>Brand:</strong>
-                            {{ device.brand }}
-                        </p>
+                    Edit
 
+                </button>
 
-                        <p>
-                            <strong>Model:</strong>
-                            {{ device.model }}
-                        </p>
+                <button
+                    (click)="deleteDevice(device._id)"
+                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
 
+                    Delete
 
-                        <p>
-                            <strong>Serial:</strong>
-                            {{ device.serialNumber }}
-                        </p>
+                </button>
 
-
-                        <p>
-                            <strong>Status:</strong>
-                            {{ device.status }}
-                        </p>
-
-
-                    </div>
-
-
-
-                    <div class="mt-5 flex gap-3">
-                        
-                        <!--button-->
-                            class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
-                            Edit
-                        <!--/button-->
-
-                        <a [routerLink]="['/devices/edit', device._id]" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
-                            Edit
-                        </a>
-
-
-                        <button
-                            (click)="deleteDevice(device._id)"
-                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
-                            Delete
-                        </button>
-
-
-                    </div>
-
-
-                </div>
-
-            }
-
+            </div>
 
         </div>
 
-    }
-
+    </div>
 
 </div>

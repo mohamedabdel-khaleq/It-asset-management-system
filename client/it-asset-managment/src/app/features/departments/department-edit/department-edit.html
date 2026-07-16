@@ -1,1 +1,84 @@
-<p>department-edit works!</p>
+<div class="max-w-4xl mx-auto p-8">
+
+    <div class="flex justify-between items-center mb-6">
+
+        <h1 class="text-3xl font-bold">
+            Edit Department
+        </h1>
+
+        <a
+            routerLink="/departments"
+            class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded">
+
+            Back
+
+        </a>
+
+    </div>
+
+    <form
+        (ngSubmit)="updateDepartment()"
+        class="bg-white shadow rounded-lg p-6 space-y-5">
+
+        <div>
+            <label class="block mb-2 font-semibold">Department Name</label>
+            <input
+                type="text"
+                [(ngModel)]="department.name"
+                name="name"
+                class="w-full border rounded px-4 py-2">
+        </div>
+
+        <div>
+            <label class="block mb-2 font-semibold">Description</label>
+            <textarea
+                rows="4"
+                [(ngModel)]="department.description"
+                name="description"
+                class="w-full border rounded px-4 py-2">
+            </textarea>
+        </div>
+
+        <div>
+            <label class="block mb-2 font-semibold">Location</label>
+            <input
+                type="text"
+                [(ngModel)]="department.location"
+                name="location"
+                class="w-full border rounded px-4 py-2">
+        </div>
+
+        <div>
+            <label class="block mb-2 font-semibold">Manager</label>
+            <input
+                type="text"
+                [(ngModel)]="department.manager"
+                name="manager"
+                class="w-full border rounded px-4 py-2">
+        </div>
+
+        <div>
+            <label class="block mb-2 font-semibold">Status</label>
+            <select
+                [(ngModel)]="department.status"
+                name="status"
+                class="w-full border rounded px-4 py-2">
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+        </div>
+
+        <div *ngIf="error" class="bg-red-100 text-red-700 p-3 rounded">
+            {{ error }}
+        </div>
+
+        <button
+            type="submit"
+            [disabled]="loading"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded">
+            {{ loading ? 'Saving...' : 'Save Changes' }}
+        </button>
+
+    </form>
+
+</div>

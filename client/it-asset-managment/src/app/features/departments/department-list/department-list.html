@@ -1,131 +1,157 @@
 <div class="p-8">
 
-    <div class="flex justify-between items-center mb-6">
+  <div class="flex justify-between items-center mb-6">
 
-        <h1 class="text-3xl font-bold">
-            Departments
-        </h1>
+    <h1 class="text-3xl font-bold">
+      Departments
+    </h1>
 
-        <a
-            routerLink="/departments/add"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded">
+    <div class="flex gap-3">
 
-            Add Department
+      <button
+        type="button"
+        (click)="loadDepartments()"
+        class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded">
 
-        </a>
+        Refresh
+
+      </button>
+
+      <button
+        type="button"
+        (click)="goToAddDepartment()"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded">
+
+        + Add Department
+
+      </button>
 
     </div>
 
+  </div>
 
+  <!-- Debug -->
+  <div class="mb-4 p-4 bg-yellow-100 rounded">
 
-    <div
-        *ngIf="loading"
-        class="text-center text-gray-600 text-lg">
+    <p><strong>Loading:</strong> {{ loading }}</p>
 
-        Loading...
+    <p><strong>Departments Count:</strong> {{ departments.length }}</p>
 
-    </div>
+  </div>
 
+  <!-- Error -->
 
+  <div
+    *ngIf="error"
+    class="bg-red-100 text-red-700 p-3 rounded mb-4">
 
-    <table
-        *ngIf="!loading"
-        class="w-full bg-white shadow rounded-lg overflow-hidden">
+    {{ error }}
 
-        <thead class="bg-gray-100">
+  </div>
 
-            <tr>
+  <!-- Loading -->
 
-                <th class="p-3 text-left">
-                    Name
-                </th>
+  <div
+    *ngIf="loading"
+    class="text-center text-lg py-10">
 
-                <th class="p-3 text-left">
-                    Manager
-                </th>
+    Loading Departments...
 
-                <th class="p-3 text-left">
-                    Location
-                </th>
+  </div>
 
-                <th class="p-3 text-left">
-                    Status
-                </th>
+  <!-- Empty -->
 
-                <th class="p-3 text-center">
-                    Actions
-                </th>
+  <div
+    *ngIf="!loading && departments.length === 0"
+    class="text-center text-gray-500 py-10">
 
-            </tr>
+    No Departments Found
 
-        </thead>
+  </div>
 
+  <!-- Table -->
 
-        <tbody>
+  <table
+    *ngIf="!loading && departments.length > 0"
+    class="w-full bg-white shadow rounded-lg overflow-hidden">
 
-            <tr
-                *ngFor="let department of departments"
-                class="border-b hover:bg-gray-50">
+    <thead class="bg-blue-600 text-white">
 
-                <td class="p-3">
+      <tr>
 
-                    {{ department.name }}
+        <th class="p-3 text-left">Name</th>
+        <th class="p-3 text-left">Manager</th>
+        <th class="p-3 text-left">Location</th>
+        <th class="p-3 text-left">Status</th>
+        <th class="p-3 text-center">Actions</th>
 
-                </td>
+      </tr>
 
+    </thead>
 
-                <td class="p-3">
+    <tbody>
 
-                    {{ department.manager }}
+      <tr
+        *ngFor="let department of departments"
+        class="border-b hover:bg-gray-100">
 
-                </td>
+        <td class="p-3">
 
+          {{ department.name }}
 
-                <td class="p-3">
+        </td>
 
-                    {{ department.location }}
+        <td class="p-3">
 
-                </td>
+          {{ department.manager }}
 
+        </td>
 
-                <td class="p-3">
+        <td class="p-3">
 
-                    <span
-                        class="bg-green-100 text-green-700 px-3 py-1 rounded-full">
+          {{ department.location }}
 
-                        {{ department.status }}
+        </td>
 
-                    </span>
+        <td class="p-3">
 
-                </td>
+          <span
+            class="px-3 py-1 rounded-full"
+            [ngClass]="{
+              'bg-green-100 text-green-700': department.status === 'Active',
+              'bg-red-100 text-red-700': department.status === 'Inactive'
+            }">
 
+            {{ department.status }}
 
-                <td
-                    class="p-3 flex justify-center gap-3">
+          </span>
 
-                    <a
-                        [routerLink]="['/departments/edit', department._id]"
-                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
+        </td>
 
-                        Edit
+        <td class="p-3 flex justify-center gap-2">
 
-                    </a>
+          <button
+            (click)="goToEditDepartment(department)"
+            class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
 
+            Edit
 
-                    <button
-                        (click)="deleteDepartment(department._id)"
-                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+          </button>
 
-                        Delete
+          <button
+            (click)="deleteDepartment(department._id)"
+            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
 
-                    </button>
+            Delete
 
-                </td>
+          </button>
 
-            </tr>
+        </td>
 
-        </tbody>
+      </tr>
 
-    </table>
+    </tbody>
+
+  </table>
 
 </div>

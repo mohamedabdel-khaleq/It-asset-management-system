@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 
 @Injectable({
@@ -31,6 +31,10 @@ export class EmployeeService {
   getEmployee(
     id: string
   ): Observable<any> {
+
+    if (!id) {
+      return of({ success: false, message: 'No employee id provided' });
+    }
 
     return this.http.get<any>(
       `${this.apiUrl}/${id}`

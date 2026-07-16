@@ -5,7 +5,6 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { DeviceService } from '../../../core/services/device';
 
-
 @Component({
   selector: 'app-device-edit',
   standalone: true,
@@ -19,12 +18,9 @@ import { DeviceService } from '../../../core/services/device';
 })
 export class DeviceEdit implements OnInit {
 
-
   private deviceService = inject(DeviceService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-
-
 
   id = '';
 
@@ -32,24 +28,20 @@ export class DeviceEdit implements OnInit {
 
   error = '';
 
+  device: any = {
 
-
-  device:any = {
-
-    assetTag:'',
-    deviceName:'',
-    category:'',
-    brand:'',
-    model:'',
-    serialNumber:'',
-    purchaseDate:'',
-    warrantyExpiry:'',
-    status:'',
-    notes:''
+    assetTag: '',
+    deviceName: '',
+    category: '',
+    brand: '',
+    model: '',
+    serialNumber: '',
+    purchaseDate: '',
+    warrantyExpiry: '',
+    status: '',
+    notes: ''
 
   };
-
-
 
   ngOnInit(): void {
 
@@ -59,92 +51,99 @@ export class DeviceEdit implements OnInit {
 
   }
 
-
-
-
-  loadDevice(){
-
-    this.deviceService.getDevice(this.id)
-    .subscribe({
-
-      next:(res)=>{
-
-        console.log(
-          'Device:',
-          res
-        );
-
-        this.device = res.data;
-
-      },
-
-
-      error:(err)=>{
-
-        console.error(err);
-
-      }
-
-    })
-
-  }
-
-
-
-
-
-  updateDevice(){
-
+  loadDevice(): void {
 
     this.loading = true;
 
+    this.deviceService.getDevice(this.id).subscribe({
+
+      next: (res: any) => {
+
+        console.log('Device:', res);
+
+        this.device = res.data;
+
+        // Fix Date Format
+        if (this.device.purchaseDate) {
+          this.device.purchaseDate =
+            this.device.purchaseDate.split('T')[0];
+        }
+
+        if (this.device.warrantyExpiry) {
+          this.device.warrantyExpiry =
+            this.device.warrantyExpiry.split('T')[0];
+        }
+
+        this.loading = false;
+
+      },
+
+      error: (err) => {
+
+        console.error(err);
+
+        this.loading = false;
+
+        this.error =
+          err?.error?.message ||
+          'Failed to load device';
+
+      }
+
+    });
+
+  }
+
+  updateDevice(): void {
+
+    this.loading = true;
+
+    this.error = '';
+
+    console.log('Sending Device:', this.device);
 
     this.deviceService.updateDevice(
       this.id,
       this.device
-    )
-    .subscribe({
+    ).subscribe({
 
-      next:(res)=>{
+      next: (res: any) => {
 
-        console.log(
-          'Updated:',
-          res
+        console.log('Updated:', res);
+
+        this.loading = false;
+
+        alert('Device Updated Successfully');
+
+        this.router.navigate(
+          ['/devices'],
+          {
+            state: {
+              refreshDevices: true
+            }
+          }
         );
-
-
-        this.loading=false;
-
-
-        alert(
-          'Device Updated Successfully'
-        );
-
-
-        this.router.navigate([
-          '/devices'
-        ]);
 
       },
 
+      error: (err) => {
 
-      error:(err)=>{
+        console.error('UPDATE ERROR:', err);
 
-        console.error(err);
+        console.log('Status:', err.status);
 
-        this.loading=false;
+        console.log('Body:', err.error);
+
+        this.loading = false;
 
         this.error =
-        'Update Failed';
+          err?.error?.message ||
+          'Update Failed';
 
       }
 
-
-    })
-
+    });
 
   }
-
-
 
 }

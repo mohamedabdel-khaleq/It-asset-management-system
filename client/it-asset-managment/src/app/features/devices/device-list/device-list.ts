@@ -1,9 +1,14 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  ChangeDetectorRef
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
 import { DeviceService } from '../../../core/services/device';
-
 
 @Component({
   selector: 'app-device-list',
@@ -13,78 +18,73 @@ import { DeviceService } from '../../../core/services/device';
     RouterLink
   ],
   templateUrl: './device-list.html',
-  styleUrl: './device-list.css'
+  styleUrls: ['./device-list.css']
 })
 export class DeviceList implements OnInit {
 
+  constructor(private cdr: ChangeDetectorRef) {}
 
   private deviceService = inject(DeviceService);
   private router = inject(Router);
 
-
   devices: any[] = [];
-
   loading = true;
-
-
+  error = '';
 
   ngOnInit(): void {
-
     this.loadDevices();
-
   }
-
-
-
 
   loadDevices(): void {
 
     this.loading = true;
+    this.error = '';
 
     console.log('Loading Devices...');
 
+    this.deviceService.getDevices().subscribe({
 
-    this.deviceService.getDevices()
-      .subscribe({
+      next: (res: any) => {
 
-        next: (res: any) => {
+        console.log('SUCCESS:', res);
 
-          console.log('Devices Response:', res);
+        const payload =
+          Array.isArray(res?.data)
+            ? res.data
+            : Array.isArray(res)
+              ? res
+              : [];
 
+        this.devices = [...payload];
 
-          this.devices = res?.data || [];
+        console.log('Devices:', this.devices);
+        console.log('Devices Count:', this.devices.length);
 
+        this.loading = false;
 
-          console.log('Devices Array:', this.devices);
+        this.cdr.detectChanges();
 
+      },
 
-          this.loading = false;
+      error: (err) => {
 
-        },
+        console.error('ERROR:', err);
 
+        this.devices = [];
+        this.loading = false;
 
-        error: (err) => {
+        this.error =
+          err?.error?.message ||
+          err?.message ||
+          'Failed to load devices';
 
-          console.error(
-            'Get Devices Error:',
-            err
-          );
+        this.cdr.detectChanges();
 
+      }
 
-          this.devices = [];
-
-          this.loading = false;
-
-        }
-
-      });
-
+    });
 
   }
-
-
-
-
 
   goToAddDevice(): void {
 
@@ -94,51 +94,45 @@ export class DeviceList implements OnInit {
 
   }
 
+  goToEditDevice(device: any): void {
 
+    const id =
+      device?._id ||
+      device?.id;
 
+    if (id) {
 
-
-  deleteDevice(id: string): void {
-
-
-    if (!confirm('Delete Device?')) {
-
-      return;
+      this.router.navigate(
+        ['/devices/edit', id],
+        {
+          state: { device }
+        }
+      );
 
     }
 
-
-
-    this.deviceService.deleteDevice(id)
-      .subscribe({
-
-        next: (res) => {
-
-          console.log(
-            'Delete Success:',
-            res
-          );
-
-
-          this.loadDevices();
-
-
-        },
-
-
-        error: (err) => {
-
-          console.error(
-            'Delete Device Error:',
-            err
-          );
-
-        }
-
-      });
-
-
   }
 
+  deleteDevice(id: string): void {
+
+    if (!confirm('Delete Device ?')) return;
+
+    this.deviceService.deleteDevice(id).subscribe({
+
+      next: () => {
+
+        this.loadDevices();
+
+      },
+
+      error: (err) => {
+
+        console.error(err);
+
+      }
+
+    });
+
+  }
 
 }

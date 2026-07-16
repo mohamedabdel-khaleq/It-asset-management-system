@@ -6,12 +6,15 @@ import { authGuard } from './core/guards/auth-guard';
 import { Dashboard } from './features/dashboard/dashboard';
 import { EmployeeList } from './features/employees/employee-list/employee-list';
 import { AddEmployee } from './features/employees/add-employee/add-employee';
+import { EditEmployee } from './features/employees/edit-employee/edit-employee';
+import { EmployeeDetails } from './features/employees/employee-details/employee-details';
 import { DeviceList } from './features/devices/device-list/device-list';
 import { AddDevice } from './features/devices/add-device/add-device';
 import { DeviceDetails } from './features/devices/device-details/device-details';
 import { DeviceEdit } from './features/devices/device-edit/device-edit';
 import { DepartmentList } from './features/departments/department-list/department-list';
 import { DepartmentAdd } from './features/departments/department-add/department-add';
+import { Reports } from './features/reports/reports';
 import { DepartmentEdit } from './features/departments/department-edit/department-edit';
 import { NotFound } from './components/not-found/not-found';
 
@@ -69,6 +72,16 @@ export const routes: Routes = [
       },
 
       {
+        path: 'employees/edit/:id',
+        component: EditEmployee
+      },
+
+      {
+        path: 'employees/:id',
+        component: EmployeeDetails
+      },
+
+      {
         path: 'devices',
         component: DeviceList
       },
@@ -107,6 +120,11 @@ export const routes: Routes = [
       {
         path: 'departments/edit/:id',
         component: DepartmentEdit
+      },
+
+      {
+        path: 'reports',
+        component: Reports
       }
 
 

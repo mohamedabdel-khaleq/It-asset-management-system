@@ -162,9 +162,7 @@ export class AddDevice {
 
 
 
-          this.router.navigate([
-            '/devices'
-          ]);
+          this.router.navigate(['/devices'], { state: { refreshDevices: true } });
 
 
 
