@@ -1,0 +1,48 @@
+/* Page */
+:host {
+  display: block;
+}
+
+/* Cards Animation */
+.bg-white,
+.bg-blue-600,
+.bg-green-600,
+.bg-purple-600,
+.bg-orange-500,
+.bg-red-600,
+.bg-slate-700 {
+  transition: all .3s ease;
+}
+
+.bg-white:hover,
+.bg-blue-600:hover,
+.bg-green-600:hover,
+.bg-purple-600:hover,
+.bg-orange-500:hover,
+.bg-red-600:hover,
+.bg-slate-700:hover {
+  transform: translateY(-5px);
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+
+th {
+  font-weight: 700;
+}
+
+td,
+th {
+  padding: 12px;
+}
+
+tbody tr:hover {
+  background: #f8fafc;
+}
+
+h1,
+h2 {
+  letter-spacing: .5px;
+}

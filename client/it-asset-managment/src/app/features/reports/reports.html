@@ -1,1 +1,69 @@
-<p>reports works!</p>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+
+
+    <!-- Bar Chart -->
+
+    <div class="bg-white shadow rounded-xl p-6">
+
+        <h2 class="text-xl font-bold mb-4">
+            System Overview
+        </h2>
+
+
+        <canvas
+        baseChart
+        [data]="barChartData"
+        [type]="barChartType">
+        </canvas>
+
+    </div>
+
+
+
+
+    <!-- Pie Chart -->
+
+    <div class="bg-white shadow rounded-xl p-6">
+
+
+        <h2 class="text-xl font-bold mb-4">
+            Device Status
+        </h2>
+
+
+        <canvas
+        baseChart
+        [data]="pieChartData"
+        [type]="pieChartType">
+        </canvas>
+
+
+    </div>
+
+
+
+    <!-- Doughnut -->
+
+    <div class="bg-white shadow rounded-xl p-6 lg:col-span-2">
+
+
+        <h2 class="text-xl font-bold mb-4">
+            Device Categories
+        </h2>
+
+
+        <div class="max-w-md mx-auto">
+
+            <canvas
+            baseChart
+            [data]="doughnutChartData"
+            [type]="doughnutChartType">
+            </canvas>
+
+        </div>
+
+
+    </div>
+
+
+</div>

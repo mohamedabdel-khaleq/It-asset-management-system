@@ -1,18 +1,16 @@
 <div class="p-8">
 
 
-    @if (loading) {
+    <div *ngIf="loading" class="text-center py-10">
 
-        <div class="text-center py-10">
+        <p class="text-xl">
+            Loading Employee...
+        </p>
 
-            <p class="text-xl">
-                Loading Employee...
-            </p>
-
-        </div>
+    </div>
 
 
-    } @else if (error) {
+    <div *ngIf="error && !loading">
 
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-5">
             {{ error }}
@@ -24,8 +22,11 @@
             Back To Employees
         </a>
 
-    } @else if (employee) {
+    </div>
 
+
+
+    <div *ngIf="employee && !loading && !error">
 
         <div class="bg-white shadow rounded-xl p-6">
 
@@ -102,23 +103,19 @@
             </a>
 
 
-
         </div>
 
-
-    } @else {
-
-
-        <div class="text-center py-10">
-
-            <p class="text-red-600 text-xl">
-                Employee Not Found
-            </p>
-
-        </div>
+    </div>
 
 
-    }
+
+    <div *ngIf="!loading && !error && !employee" class="text-center py-10">
+
+        <p class="text-red-600 text-xl">
+            Employee Not Found
+        </p>
+
+    </div>
 
 
 </div>
