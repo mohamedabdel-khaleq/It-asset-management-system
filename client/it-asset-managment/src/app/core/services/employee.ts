@@ -29,7 +29,7 @@ export class EmployeeService {
 
 
   getEmployee(
-    id: string
+    id: any
   ): Observable<any> {
 
     if (!id) {

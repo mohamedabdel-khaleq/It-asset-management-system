@@ -16,6 +16,8 @@ import { DepartmentList } from './features/departments/department-list/departmen
 import { DepartmentAdd } from './features/departments/department-add/department-add';
 import { Reports } from './features/reports/reports';
 import { DepartmentEdit } from './features/departments/department-edit/department-edit';
+import { Maintenance } from './features/maintenance/maintenance';
+import { AddMaintenance } from './features/maintenance/add-maintenance/add-maintenance';
 import { NotFound } from './components/not-found/not-found';
 
 export const routes: Routes = [
@@ -120,6 +122,16 @@ export const routes: Routes = [
       {
         path: 'departments/edit/:id',
         component: DepartmentEdit
+      },
+
+      {
+        path: 'maintenance',
+        component: Maintenance
+      },
+
+      {
+        path: 'maintenance/add',
+        component: AddMaintenance
       },
 
       {

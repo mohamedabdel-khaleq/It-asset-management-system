@@ -1,32 +1,6 @@
 <div class="p-8">
 
-
-    <div *ngIf="loading" class="text-center py-10">
-
-        <p class="text-xl">
-            Loading Employee...
-        </p>
-
-    </div>
-
-
-    <div *ngIf="error && !loading">
-
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-5">
-            {{ error }}
-        </div>
-
-        <a
-            routerLink="/employees"
-            class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
-            Back To Employees
-        </a>
-
-    </div>
-
-
-
-    <div *ngIf="employee && !loading && !error">
+    <!--div *ngIf="employee && !loading && !error"-->
 
         <div class="bg-white shadow rounded-xl p-6">
 
@@ -105,17 +79,17 @@
 
         </div>
 
-    </div>
+    <!--/div-->
 
 
 
-    <div *ngIf="!loading && !error && !employee" class="text-center py-10">
+    <!--div *ngIf="!loading && !error && !employee" class="text-center py-10"-->
 
-        <p class="text-red-600 text-xl">
+        <!--p class="text-red-600 text-xl"-->
             Employee Not Found
-        </p>
+        <!--/p-->
 
-    </div>
+    <!--/div-->
 
 
 </div>

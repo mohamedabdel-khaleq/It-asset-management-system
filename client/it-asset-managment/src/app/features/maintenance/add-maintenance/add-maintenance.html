@@ -1,0 +1,161 @@
+<div class="p-8">
+
+
+    <h1 class="text-3xl font-bold mb-6">
+        Add Maintenance
+    </h1>
+
+
+
+
+    <div class="bg-white shadow rounded-lg p-6 max-w-xl">
+
+
+        <form
+        (ngSubmit)="addMaintenance()"
+        #maintenanceForm="ngForm">
+
+
+
+
+
+            <!-- Device ID -->
+
+            <label class="block mb-2 font-semibold">
+                Device ID
+            </label>
+
+
+            <input
+            type="text"
+            [(ngModel)]="maintenance.device"
+            name="device"
+            required
+            class="w-full border p-3 rounded mb-4"
+            placeholder="Enter Device ID">
+
+
+
+
+
+            <!-- Issue -->
+
+            <label class="block mb-2 font-semibold">
+                Issue
+            </label>
+
+
+            <input
+            type="text"
+            [(ngModel)]="maintenance.issue"
+            name="issue"
+            required
+            minlength="5"
+            class="w-full border p-3 rounded mb-4"
+            placeholder="Enter Issue">
+
+
+
+
+
+
+            <!-- Description -->
+
+            <label class="block mb-2 font-semibold">
+                Description
+            </label>
+
+
+            <textarea
+            [(ngModel)]="maintenance.description"
+            name="description"
+            rows="4"
+            class="w-full border p-3 rounded mb-4"
+            placeholder="Enter Description">
+            </textarea>
+
+
+
+
+
+
+            <!-- Reported By -->
+
+            <label class="block mb-2 font-semibold">
+                Reported By
+            </label>
+
+
+            <input
+            type="text"
+            [(ngModel)]="maintenance.reportedBy"
+            name="reportedBy"
+            required
+            class="w-full border p-3 rounded mb-4"
+            placeholder="Enter Reporter Name">
+
+
+
+
+
+            <!-- Assigned To -->
+
+            <label class="block mb-2 font-semibold">
+                Assigned To
+            </label>
+
+
+            <input
+            type="text"
+            [(ngModel)]="maintenance.assignedTo"
+            name="assignedTo"
+            class="w-full border p-3 rounded mb-4"
+            placeholder="Assigned Person">
+
+
+
+
+
+            <!-- Cost -->
+
+            <label class="block mb-2 font-semibold">
+                Cost
+            </label>
+
+
+            <input
+            type="number"
+            [(ngModel)]="maintenance.cost"
+            name="cost"
+            min="0"
+            class="w-full border p-3 rounded mb-6"
+            placeholder="Enter Cost">
+
+
+
+
+
+
+            <!-- Submit Button -->
+
+            <button
+            type="submit"
+            [disabled]="!maintenanceForm.valid"
+            class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400">
+
+
+                Save Maintenance
+
+
+            </button>
+
+
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
